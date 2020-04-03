@@ -1,0 +1,9 @@
+site_name: Wiki Test
+nav:
+  - Home: index.md
+  - Second: second-page.md
+  - Nested:
+    - Info: nested/index.md
+    - Another: nested/nested-second.md
+theme:
+  name: 'material'
