@@ -1,6 +1,6 @@
 ## What is this?
 
-The home page
+The home page of an example documentation site
 
 ## But why?
 
