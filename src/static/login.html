@@ -1,0 +1,61 @@
+<html lang="en">
+  <head>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="747554434766-t293uqdtqav6e9m4u9fu515j232a8970.apps.googleusercontent.com">
+    <meta name="google-signin-hosted_domain" content="growbox.ag">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      #content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="content">
+      <p>Sign in with your <b>growbox.ag</b> email to continue</p>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </main>
+    <script>
+      init();
+
+      function init() {
+        const isLocalhost = window.location.hostname === 'localhost';
+        const clientId = isLocalhost ?
+          '747554434766-t293uqdtqav6e9m4u9fu515j232a8970.apps.googleusercontent.com' :
+          '1036502305175-a6tlvrkrbkmdl26kummgjv3mi060jejp.apps.googleusercontent.com';
+
+        gapi.auth2.init({
+          client_id: clientId,
+          scope: 'profile email',
+          hosted_domain: 'growbox.ag',
+        });
+      }
+
+      function onSignIn(googleUser) {
+        const params = new URLSearchParams(window.location.search);
+        const redirectUrl = decodeURI(params.get('redirect_url') || '/');
+        const idToken = googleUser.getAuthResponse().id_token;
+
+        fetch('/authenticate', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ idToken }),
+        })
+          .then(res => {
+            if (res.status === 200) {
+              window.location.replace(redirectUrl || '/');
+            } else {
+              return Promise.reject(res.body);
+            }
+          })
+          .catch(err => console.log(error));
+      }
+    </script>
+  </body>
+</html>
