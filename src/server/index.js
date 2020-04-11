@@ -1,6 +1,9 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
 const port = 3000;
@@ -48,4 +51,18 @@ app.use(express.static('../static'));
 app.get('/', (req, res) => res.send('Home endpoint'));
 app.get('/test', (req, res) => res.send('Test endpoint'));
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+
+let server;
+if (process.env.NODE_ENV === 'production') {
+  const credentials = {
+    key: fs.readFileSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/cert.pem', 'utf8'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/chain.pem', 'utf8')
+  }
+  server = https.createServer(credentials, app);
+} else {
+  server = http.createServer(app);
+}
+
+server.listen(port, () => console.log(`App listening at http://localhost:${port}`));
