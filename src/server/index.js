@@ -6,7 +6,8 @@ const https = require('https');
 const fs = require('fs');
 
 const app = express();
-const port = 3000;
+const httpPort = 3000;
+const httpsPort = 3001;
 
 // App configuration
 app.use(express.json());
@@ -53,16 +54,15 @@ app.get('/test', (req, res) => res.send('Test endpoint'));
 
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 
-let server;
 if (process.env.NODE_ENV === 'production') {
   const credentials = {
     key: fs.readFileSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/privkey.pem', 'utf8'),
     cert: fs.readFileSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/cert.pem', 'utf8'),
     ca: fs.readFileSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/chain.pem', 'utf8'),
   }
-  server = https.createServer(credentials, app);
-} else {
-  server = http.createServer(app);
+  httpsServer = https.createServer(credentials, app);
+  httpsServer.listen(httpsPort, () => console.log(`Docker app listening on port ${httpsPort}`));
 }
 
-server.listen(port, () => console.log(`App listening at http://localhost:${port}`));
+httpServer = http.createServer(app);
+httpServer.listen(httpPort, () => console.log(`Docker app listening on port ${httpPort}`));

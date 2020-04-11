@@ -4,14 +4,13 @@ services:
     build: "."
     ports:
       - "80:3000"
+      - "443:3001"
     environment:
       NODE_ENV: "production"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
   server-dev:
-    build:
-      dockerfile: "Dockerfile.dev"
-      context: "."
+    build: "."
     ports:
       - "3000:3000"
     environment:
