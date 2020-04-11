@@ -10,6 +10,7 @@ FROM node:alpine
 WORKDIR /app
 COPY ./src/. ./src/
 COPY --from=buildDocs /app/site/. ./src/static/
+COPY /etc/letsencrypt/archive/wiki-test.johndyer.dev/. ./src/server/credentials/
 WORKDIR /app/src/server
 RUN npm install
 CMD ["npm", "run", "start"]
