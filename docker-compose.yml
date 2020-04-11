@@ -7,7 +7,7 @@ services:
     environment:
       NODE_ENV: "production"
     volumes:
-      - /etc/letsencrypt/archive/wiki-test.johndyer.dev:/etc/letsencrypt/credentials
+      - /etc/letsencrypt:/etc/letsencrypt
   server-dev:
     build:
       dockerfile: "Dockerfile.dev"
