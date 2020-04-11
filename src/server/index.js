@@ -56,9 +56,9 @@ console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 let server;
 if (process.env.NODE_ENV === 'production') {
   const credentials = {
-    key: fs.readFileSync(fs.readlinkSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/privkey.pem'), 'utf8'),
-    cert: fs.readFileSync(fs.readlinkSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/cert.pem'), 'utf8'),
-    ca: fs.readFileSync(fs.readlinkSync('/etc/letsencrypt/live/wiki-test.johndyer.dev/chain.pem'), 'utf8')
+    key: fs.readFileSync('./credentials/privkey.pem', 'utf8'),
+    cert: fs.readFileSync('./credentials/cert.pem', 'utf8'),
+    ca: fs.readFileSync('./credentials/chain.pem', 'utf8')
   }
   server = https.createServer(credentials, app);
 } else {

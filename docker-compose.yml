@@ -7,7 +7,9 @@ services:
     environment:
       NODE_ENV: "production"
   server-dev:
-    build: "."
+    build:
+      dockerfile: "Dockerfile.dev"
+      context: "."
     ports:
       - "3000:3000"
     environment:
